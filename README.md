@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CRUD Application</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f7fa;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    .crud-container {
+      max-width: 600px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
+    }
+    input {
+      width: 70%;
+      padding: 10px;
+      margin: 5px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    button {
+      padding: 10px 15px;
+      margin: 5px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .add-btn { background: #28a745; color: white; }
+    .edit-btn { background: #ffc107; color: black; }
+    .delete-btn { background: #dc3545; color: white; }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      padding: 10px;
+      margin: 5px 0;
+      background: #f8f9fa;
+      border: 1px solid #ddd;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>CRUD Application (Frontend)</h1>
+  <div class="crud-container">
+    <input type="text" id="itemInput" placeholder="Enter item..." />
+    <button class="add-btn" onclick="addItem()">Add</button>
+    <ul id="itemList"></ul>
+  </div>
+
+  <script>
+    let items = [];
+    let editIndex = null;
+
+    function renderList() {
+      const list = document.getElementById("itemList");
+      list.innerHTML = "";
+      items.forEach((item, index) => {
+        list.innerHTML += `
+          <li>
+            ${item}
+            <div>
+              <button class="edit-btn" onclick="editItem(${index})">Edit</button>
+              <button class="delete-btn" onclick="deleteItem(${index})">Delete</button>
+            </div>
+          </li>
+        `;
+      });
+    }
+
+    function addItem() {
+      const input = document.getElementById("itemInput");
+      const value = input.value.trim();
+
+      if (value === "") return alert("Please enter an item!");
+
+      if (editIndex !== null) {
+        items[editIndex] = value; // Update item
+        editIndex = null;
+      } else {
+        items.push(value); // Create new item
+      }
+
+      input.value = "";
+      renderList();
+    }
+
+    function editItem(index) {
+      document.getElementById("itemInput").value = items[index];
+      editIndex = index;
+    }
+
+    function deleteItem(index) {
+      items.splice(index, 1);
+      renderList();
+    }
+  </script>
+</body>
+</html>
